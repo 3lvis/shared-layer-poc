@@ -1,0 +1,14 @@
+{
+  "name": "shared-layer-poc",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:web": "node apps/web/scripts/dev.mjs",
+    "build:web": "node apps/web/scripts/build.mjs",
+    "dev:mobile": "npm --workspace @poc/mobile run start",
+    "ios": "npm --workspace @poc/mobile run ios",
+    "android": "npm --workspace @poc/mobile run android",
+    "typecheck": "tsc -b --pretty"
+  }
+}
+
