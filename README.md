@@ -12,7 +12,7 @@ Minimal monorepo proving that a web React app and a React Native app import the 
 ## Prerequisites
 - Node.js 18+ and npm
 - iOS: Xcode + iOS Simulator, CocoaPods (`brew install cocoapods`), then `pod install` once in `apps/mobile/ios`
-- Android (optional for this POC): Android Studio, SDKs, emulator
+- Android: Android Studio, SDKs, and an emulator (API 34, arm64)
 
 ## Install
 ```bash
@@ -21,6 +21,28 @@ npm i
 # iOS pods (first time only)
 cd apps/mobile/ios && pod install && cd ../..
 ```
+
+### Android environment (macOS)
+React Native 0.74 expects compileSdk 34, build-tools 34.0.0, JDK 17.
+
+1) JDK 17
+```
+brew install --cask temurin@17
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
+2) Android SDK + tools (Android Studio → SDK Manager)
+- Android SDK Platform 34
+- Android SDK Build-Tools 34.0.0
+- Platform-Tools (adb), Emulator, Command-line Tools (latest)
+
+3) Environment vars
+```
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH:$JAVA_HOME/bin"
+```
+Persist the exports above in `~/.zshrc`, then `source ~/.zshrc`.
 
 ## Run
 ```bash
@@ -36,6 +58,8 @@ npm run dev:mobile
 # Android emulator (with an emulator running)
 npm run android
 ```
+
+Tip: create an AVD in Android Studio (Device Manager) using API 34, Google APIs, arm64.
 
 If the iOS simulator name differs on your machine, list available devices:
 ```bash
@@ -84,6 +108,7 @@ shared-layer-poc/
 - Mobile uses React Native CLI + Metro (no Expo). Runs on iOS Simulator by default.
 - Shared package is TypeScript-only (`@poc/shared`), consumed by both apps.
 - Metro config extends `@react-native/metro-config`, enables symlinks, and watches the workspace so imports resolve from the hoisted `node_modules`.
+- Android Gradle is patched for hoisted deps (`apps/mobile/android/settings.gradle`, `apps/mobile/android/app/build.gradle`).
 - React versions: RN 0.74 peers on React 18.2, so mobile uses 18.2. Web can use 18.3.x; this does not affect the shared TS domain code.
 
 ## Troubleshooting
@@ -98,6 +123,9 @@ shared-layer-poc/
   - Run `npm i` at repo root, then restart Metro with `--reset-cache`.
 - Simulator name mismatch:
   - List available devices with `xcrun simctl list devices` and update the `ios` script in `apps/mobile/package.json`.
+- Android SDK path not found / RN CLI gradle scripts not found:
+  - Add `apps/mobile/android/local.properties` (not committed): `sdk.dir=/Users/<you>/Library/Android/sdk`.
+  - Ensure JDK and SDK env vars are set in your shell (see Android environment above).
 
 ## Type checking
 `npm run typecheck` triggers TS project references from the root. For strict build-mode across packages, we can add `"composite": true` to each referenced tsconfig — say the word and I’ll enable it.
