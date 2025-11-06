@@ -10,7 +10,7 @@ import { SafeAreaView, Text, Button, FlatList, View } from 'react-native'
 import { catalog, useCart, type Product } from '@poc/shared'
 
 export default function App() {
-  const { items, totalNOK, add } = useCart()
+  const { totalNOK, add } = useCart()
   const data: Product[] = Object.values(catalog)
   return (
     <SafeAreaView>
@@ -26,11 +26,6 @@ export default function App() {
         )}
       />
       <Text style={{ fontSize: 18, margin: 16 }}>Total: {totalNOK} NOK</Text>
-      <View style={{ margin: 16 }}>
-        {items.map(it => (
-          <Text key={it.id}>{it.name} x {it.qty} — {it.lineTotalNOK} NOK</Text>
-        ))}
-      </View>
     </SafeAreaView>
   )
 }

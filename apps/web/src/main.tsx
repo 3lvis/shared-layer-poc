@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { catalog, useCart } from '@poc/shared'
 
 function App() {
-  const { items, totalNOK, add } = useCart()
+  const { totalNOK, add } = useCart()
   return (
     <main style={{ fontFamily: 'system-ui', padding: 16 }}>
       <h1>POC Web</h1>
@@ -18,12 +18,6 @@ function App() {
         ))}
       </ul>
       <div><strong>Total:</strong> {totalNOK} NOK</div>
-      <h3>Cart</h3>
-      <ul>
-        {items.map(it => (
-          <li key={it.id}>{it.name} x {it.qty} — {it.lineTotalNOK} NOK</li>
-        ))}
-      </ul>
     </main>
   )
 }

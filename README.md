@@ -130,6 +130,13 @@ shared-layer-poc/
 ## Type checking
 `npm run typecheck` triggers TS project references from the root. For strict build-mode across packages, we can add `"composite": true` to each referenced tsconfig — say the word and I’ll enable it.
 
+## Tests
+- Unit: reducer and pure helpers under `packages/shared/__tests__/*`
+- Integration: `useCart` hook via `@testing-library/react` `renderHook`
+- Run: `npm run test`
+
+Why the shared hook? It centralizes cart state transitions and derived values so Web and React Native don’t each re‑implement view logic. Both apps call the same `useCart` presenter and render with their own primitives. Result: consistent behavior, easier feature additions, and proper tests for logic with zero UI coupling.
+
 ## Acceptance criteria
 - Both apps compile and run.
 - Both import `@poc/shared`.
