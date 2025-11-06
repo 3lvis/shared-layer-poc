@@ -8,7 +8,7 @@
     "dev:mobile": "npm --workspace @poc/mobile run start",
     "ios": "npm --workspace @poc/mobile run ios",
     "android": "npm --workspace @poc/mobile run android",
-    "typecheck": "tsc -b --pretty"
+    "typecheck": "tsc -b --pretty",
+    "test": "npm --workspace @poc/shared run test"
   }
 }
-

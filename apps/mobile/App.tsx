@@ -5,12 +5,12 @@
  * @format
  */
 
-import React, { useState } from 'react'
+import React from 'react'
 import { SafeAreaView, Text, Button, FlatList, View } from 'react-native'
-import { catalog, addToCart, calcTotal, type CartLine, type Product } from '@poc/shared'
+import { catalog, useCart, type Product } from '@poc/shared'
 
 export default function App() {
-  const [cart, setCart] = useState<CartLine[]>([])
+  const { items, totalNOK, add } = useCart()
   const data: Product[] = Object.values(catalog)
   return (
     <SafeAreaView>
@@ -21,11 +21,16 @@ export default function App() {
         renderItem={({ item }) => (
           <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
             <Text>{item.name} — {item.priceNOK} NOK</Text>
-            <Button title="Add" onPress={() => setCart(c => addToCart(c, item.id))} />
+            <Button title="Add" onPress={() => add(item.id)} />
           </View>
         )}
       />
-      <Text style={{ fontSize: 18, margin: 16 }}>Total: {calcTotal(cart)} NOK</Text>
+      <Text style={{ fontSize: 18, margin: 16 }}>Total: {totalNOK} NOK</Text>
+      <View style={{ margin: 16 }}>
+        {items.map(it => (
+          <Text key={it.id}>{it.name} x {it.qty} — {it.lineTotalNOK} NOK</Text>
+        ))}
+      </View>
     </SafeAreaView>
   )
 }
