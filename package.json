@@ -4,6 +4,7 @@
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "dev:web": "node apps/web/scripts/dev.mjs",
+    "web": "npm run dev:web",
     "build:web": "node apps/web/scripts/build.mjs",
     "dev:mobile": "npm --workspace @poc/mobile run start",
     "ios": "npm --workspace @poc/mobile run ios",

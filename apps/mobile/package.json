@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "react-native start",
-    "ios": "react-native run-ios --simulator 'iPhone 16 Pro' --no-packager",
-    "android": "react-native run-android --no-packager"
+    "ios": "react-native run-ios --simulator 'iPhone 16 Pro'",
+    "android": "react-native run-android"
   },
   "dependencies": {
     "@babel/runtime": "^7.25.0",
