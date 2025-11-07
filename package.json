@@ -11,5 +11,8 @@
     "android": "npm --workspace @poc/mobile run android",
     "typecheck": "tsc -b --pretty",
     "test": "npm --workspace @poc/shared run test"
+  },
+  "devDependencies": {
+    "@react-native-community/cli": "*"
   }
 }
