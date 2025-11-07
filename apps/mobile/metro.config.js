@@ -8,7 +8,6 @@ const baseConfig = getDefaultConfig(projectRoot)
 module.exports = mergeConfig(baseConfig, {
   resolver: {
     unstable_enableSymlinks: true,
-    unstable_conditionNames: ['require', 'import', 'react-native'],
     // Ensure a single React copy is resolved from the workspace root
     extraNodeModules: {
       '@babel/runtime': path.resolve(workspaceRoot, 'node_modules/@babel/runtime'),
