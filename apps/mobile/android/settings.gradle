@@ -1,7 +1,16 @@
-rootProject.name = 'mobile'
-// Resolve RN CLI scripts from hoisted workspace node_modules
-apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
-applyNativeModulesSettingsGradle(settings)
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+  }
+  // Resolve React Native Gradle plugin from hoisted workspace node_modules
+  includeBuild("../../../node_modules/@react-native/gradle-plugin")
+}
 
-include ':app'
-includeBuild('../../../node_modules/@react-native/gradle-plugin')
+plugins {
+  id("com.facebook.react.settings")
+}
+
+rootProject.name = 'mobile'
+include(":app")
