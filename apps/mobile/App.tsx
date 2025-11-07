@@ -6,7 +6,8 @@
  */
 
 import React from 'react'
-import { SafeAreaView, Text, Button, FlatList, View } from 'react-native'
+import { Text, Button, FlatList, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { catalog, useCart, type Product } from '@poc/shared'
 
 export default function App() {

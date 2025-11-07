@@ -12,7 +12,6 @@ module.exports = mergeConfig(baseConfig, {
     extraNodeModules: {
       '@babel/runtime': path.resolve(workspaceRoot, 'node_modules/@babel/runtime'),
       'react-native': path.resolve(workspaceRoot, 'node_modules/react-native'),
-      'react': path.resolve(workspaceRoot, 'node_modules/react'),
     },
     // Avoid picking up nested node_modules from packages (prevents duplicate React)
     disableHierarchicalLookup: true,
