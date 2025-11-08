@@ -41,9 +41,23 @@ target 'mobile' do
     # Ensure FBReactNativeSpec check script does not always run (silences Xcode note)
     installer.pods_project.targets.each do |t|
       t.build_phases.each do |phase|
-        if phase.respond_to?(:name) && phase.name == '[CP-User] [RN]Check FBReactNativeSpec'
-          if phase.respond_to?(:always_out_of_date=)
-            phase.always_out_of_date = false
+        next unless phase.respond_to?(:name)
+
+        # Quiet FBReactNativeSpec check: don't always run, and provide an output stamp
+        if phase.name == '[CP-User] [RN]Check FBReactNativeSpec'
+          phase.always_out_of_date = false if phase.respond_to?(:always_out_of_date=)
+          if phase.respond_to?(:output_paths) && phase.respond_to?(:output_paths=)
+            outputs = (phase.output_paths || []) + ['$(DERIVED_FILE_DIR)/FBReactNativeSpec.stamp']
+            phase.output_paths = outputs.uniq
+          end
+        end
+
+        # Quiet Hermes replacement: don't always run, and provide an output stamp
+        if phase.name == '[CP-User] [Hermes] Replace Hermes for the right configuration, if needed'
+          phase.always_out_of_date = false if phase.respond_to?(:always_out_of_date=)
+          if phase.respond_to?(:output_paths) && phase.respond_to?(:output_paths=)
+            outputs = (phase.output_paths || []) + ['$(DERIVED_FILE_DIR)/HermesConfig.stamp']
+            phase.output_paths = outputs.uniq
           end
         end
       end
