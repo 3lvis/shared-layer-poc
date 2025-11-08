@@ -4,16 +4,37 @@ pluginManagement {
     google()
     mavenCentral()
   }
-  // Resolve React Native Gradle plugin from hoisted workspace node_modules
-  includeBuild("../../../node_modules/@react-native/gradle-plugin")
+  // Make the React Native Gradle plugin available to the build (Bun or classic layouts)
+  def candidates = [
+    file("../../../node_modules/@react-native/gradle-plugin"),
+    file("../../node_modules/@react-native/gradle-plugin"),
+    file("../node_modules/@react-native/gradle-plugin"),
+    file("node_modules/@react-native/gradle-plugin"),
+  ]
+  def bunRoot = file("../../../node_modules/.bun")
+  if (bunRoot.exists()) {
+    def matches = bunRoot.listFiles()?.findAll { it.name.startsWith("@react-native+gradle-plugin@") } ?: []
+    if (!matches.isEmpty()) {
+      def preferred = matches.find { it.name.startsWith("@react-native+gradle-plugin@0.82") }
+      if (preferred == null) {
+        matches.sort { a, b -> b.name <=> a.name }
+        preferred = matches[0]
+      }
+      candidates.add(new File(preferred, "node_modules/@react-native/gradle-plugin"))
+    }
+  }
+  def pluginDir = candidates.find { it != null && it.exists() }
+  if (pluginDir != null) {
+    def canonical = pluginDir.canonicalFile
+    logger.lifecycle("Including React Native Gradle plugin from: ${canonical}")
+    includeBuild(canonical)
+  } else {
+    logger.warn("React Native Gradle plugin not found. Tried: ${candidates}")
+  }
 }
 
-plugins {
-  id("com.facebook.react.settings")
-}
-
-// Generate autolinking.json and include native modules discovered by the RN CLI
-reactSettings.autolinkLibrariesFromCommand()
+// No settings plugin: project has no native modules to autolink.
+// This avoids Gradle plugin marker resolution issues under Bun.
 
 rootProject.name = 'mobile'
 include(":app")

@@ -10,12 +10,60 @@ plugins {
  */
 react {
     /* Folders */
-    //   The root of your project, i.e. where "package.json" lives. Default is '..'
-    // root = file("../")
-    //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
-    reactNativeDir = file("../../../../node_modules/react-native")
-    //   The folder where the react-native Codegen package is. Default is ../node_modules/@react-native/codegen
-    codegenDir = file("../../../../node_modules/@react-native/codegen")
+    // Resolve paths robustly under Bun or classic node_modules
+    def workspaceRoot = file("../../../../")
+    def rootNodeModules = new File(workspaceRoot, "node_modules")
+    def appNodeModules = file("../../node_modules")
+    def bunRoot = new File(rootNodeModules, ".bun")
+
+    def tryDirs = { List<File> dirs ->
+        return dirs.find { it != null && it.exists() }
+    }
+
+    // Locate react-native
+    def rnCandidates = [
+        new File(rootNodeModules, "react-native"),
+        new File(appNodeModules, "react-native")
+    ]
+    if (bunRoot.exists()) {
+        def rnMatches = bunRoot.listFiles()?.findAll { it.name.startsWith("react-native@") } ?: []
+        if (!rnMatches.isEmpty()) {
+            // Prefer 0.82.x if present, else pick latest lexicographically
+            def preferred = rnMatches.find { it.name.startsWith("react-native@0.82") }
+            if (preferred == null) {
+                rnMatches.sort { a, b -> b.name <=> a.name }
+                preferred = rnMatches[0]
+            }
+            rnCandidates.add(new File(preferred, "node_modules/react-native"))
+        }
+    }
+    def rnDir = tryDirs(rnCandidates)
+    if (rnDir == null) {
+        throw new GradleException("Could not locate react-native module. Tried: ${rnCandidates}")
+    }
+    reactNativeDir = rnDir
+
+    // Locate @react-native/codegen
+    def codegenCandidates = [
+        new File(rootNodeModules, "@react-native/codegen"),
+        new File(appNodeModules, "@react-native/codegen")
+    ]
+    if (bunRoot.exists()) {
+        def cgMatches = bunRoot.listFiles()?.findAll { it.name.startsWith("@react-native+codegen@") } ?: []
+        if (!cgMatches.isEmpty()) {
+            def preferredCg = cgMatches.find { it.name.startsWith("@react-native+codegen@0.82") }
+            if (preferredCg == null) {
+                cgMatches.sort { a, b -> b.name <=> a.name }
+                preferredCg = cgMatches[0]
+            }
+            codegenCandidates.add(new File(preferredCg, "node_modules/@react-native/codegen"))
+        }
+    }
+    def cgDir = tryDirs(codegenCandidates)
+    if (cgDir == null) {
+        throw new GradleException("Could not locate @react-native/codegen module. Tried: ${codegenCandidates}")
+    }
+    codegenDir = cgDir
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../node_modules/react-native/cli.js
     // cliFile = file("../node_modules/react-native/cli.js")
 

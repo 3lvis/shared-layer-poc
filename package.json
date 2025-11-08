@@ -7,8 +7,8 @@
     "web": "bun apps/web/scripts/dev.mjs",
     "build:web": "bun apps/web/scripts/build.mjs",
     "dev:mobile": "bun run --cwd=apps/mobile start",
-    "ios": "bun run --cwd=apps/mobile ios",
-    "android": "bun run --cwd=apps/mobile android",
+    "ios": "cd apps/mobile && bunx @react-native-community/cli run-ios --simulator 'iPhone 16 Pro'",
+    "android": "cd apps/mobile && bunx @react-native-community/cli run-android",
     "android:release": "cd apps/mobile/android && ./gradlew clean assembleRelease",
     "android:install:release": "adb install -r apps/mobile/android/app/build/outputs/apk/release/app-release.apk",
     "release": "bun apps/web/scripts/build.mjs && bun run android:release",
@@ -16,7 +16,10 @@
     "test": "cd packages/shared && bunx vitest"
   },
   "devDependencies": {
-    "@react-native-community/cli": "*"
+    "@react-native-community/cli": "*",
+    "@react-native-community/cli-platform-android": "^20.0.2",
+    "@react-native-community/cli-platform-ios": "^20.0.2",
+    "@react-native/gradle-plugin": "0.82.1"
   },
   "packageManager": "bun@1.1.30"
 }

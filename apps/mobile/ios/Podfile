@@ -1,9 +1,17 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
+# Resolve react_native_pods.rb with node to allow for hoisting / Bun layouts
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
+
+# Resolve absolute path to react-native (package root) using Node
+rn_package_json = Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/package.json",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+rn_path = File.expand_path(File.dirname(rn_package_json))
 
 # Explicitly set iOS deployment target to match RN 0.82 toolchain expectations
 platform :ios, '15.1'
@@ -19,7 +27,7 @@ target 'mobile' do
   config = use_native_modules!
 
   use_react_native!(
-    :path => config[:reactNativePath],
+    :path => rn_path,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
@@ -33,9 +41,22 @@ target 'mobile' do
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
-      config[:reactNativePath],
+      rn_path,
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # Ensure Xcode build settings use the resolved RN path for scripts
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.build_configurations.each do |config|
+        config.build_settings['REACT_NATIVE_PATH'] = rn_path
+      end
+    end
+    installer.target_installation_results.pod_target_installation_results.values.each do |pod_inst|
+      proj = pod_inst.project
+      proj.build_configurations.each do |config|
+        config.build_settings['REACT_NATIVE_PATH'] = rn_path
+      end
+    end
   end
 end
