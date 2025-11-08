@@ -8,3 +8,4 @@ npm-debug.log*
 **/.gradle
 **/.gradle-home
 apps/mobile/android/.gradle-home/
+**/*.tsbuildinfo
