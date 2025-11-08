@@ -62,5 +62,34 @@ target 'mobile' do
         end
       end
     end
+
+    # Force Pods to use Xcode default toolchain and scrub Metal paths
+    installer.pods_project.targets.each do |t|
+      t.build_configurations.each do |cfg|
+        bs = cfg.build_settings
+
+        # Force default toolchain (remove Metal)
+        bs['TOOLCHAINS'] = 'com.apple.dt.toolchain.XcodeDefault'
+        # Point via DEVELOPER_DIR, so it's not hardcoded to /Applications
+        bs['TOOLCHAIN_DIR'] = '$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain'
+
+        # Clean any literal Metal simulator Swift paths that may have been injected
+        if bs['LIBRARY_SEARCH_PATHS']
+          paths = Array(bs['LIBRARY_SEARCH_PATHS']).map(&:to_s)
+          paths.reject! { |p| p.include?('Metal.xctoolchain/usr/lib/swift/iphonesimulator') }
+          # Ensure the canonical variable-based path is present
+          paths << '$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)'
+          bs['LIBRARY_SEARCH_PATHS'] = paths.uniq
+        end
+
+        # Optional: remove duplicate -lc++ if present
+        if bs['OTHER_LDFLAGS']
+          flags = Array(bs['OTHER_LDFLAGS']).map(&:to_s)
+          cxx_count = flags.count('-lc++')
+          flags.delete('-lc++') if cxx_count && cxx_count > 1
+          bs['OTHER_LDFLAGS'] = flags
+        end
+      end
+    end
   end
 end

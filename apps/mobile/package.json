@@ -6,7 +6,9 @@
   "scripts": {
     "start": "react-native start",
     "ios": "react-native run-ios --simulator 'iPhone 16 Pro'",
-    "android": "react-native run-android"
+    "android": "react-native run-android",
+    "e2e:ios": "npx detox build -c ios.sim.release -l error && NODE_NO_WARNINGS=1 npx detox test -c ios.sim.release -l error --artifacts-location ../../artifacts/detox/ios --record-logs failing --take-screenshots failing --record-videos failing",
+    "e2e:android": "npx detox build -c android.emu.release -l error && NODE_NO_WARNINGS=1 npx detox test -c android.emu.release -l error --artifacts-location ../../artifacts/detox/android --record-logs failing --take-screenshots failing --record-videos failing"
   },
   "dependencies": {
     "@babel/runtime": "^7.25.0",

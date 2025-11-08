@@ -1,23 +1,11 @@
 import esbuild from 'esbuild'
 import { fileURLToPath } from 'url'
 import path from 'node:path'
-import { createRequire } from 'node:module'
+import { aliasReactSingletonPlugin } from './aliasReactPlugin.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..') // apps/web
-const require = createRequire(import.meta.url)
-
-const aliasReactPlugin = {
-  name: 'alias-react-singleton',
-  setup(build) {
-    const resolveFromWeb = (id) => require.resolve(id, { paths: [root] })
-    build.onResolve({ filter: /^react$/ }, () => ({ path: resolveFromWeb('react') }))
-    build.onResolve({ filter: /^react\/jsx-runtime$/ }, () => ({ path: resolveFromWeb('react/jsx-runtime') }))
-    build.onResolve({ filter: /^react\/jsx-dev-runtime$/ }, () => ({ path: resolveFromWeb('react/jsx-dev-runtime') }))
-    build.onResolve({ filter: /^react-dom$/ }, () => ({ path: resolveFromWeb('react-dom') }))
-    build.onResolve({ filter: /^react-dom\/client$/ }, () => ({ path: resolveFromWeb('react-dom/client') }))
-  }
-}
+const aliasReactPlugin = aliasReactSingletonPlugin(root)
 
 export async function build() {
   return esbuild.build({
@@ -30,7 +18,7 @@ export async function build() {
     target: 'es2022',
     jsx: 'automatic',
     loader: { '.ts': 'ts', '.tsx': 'tsx' },
-    define: { 'process.env.NODE_ENV': '"development"' },
+    define: { 'process.env.NODE_ENV': '"production"' },
     plugins: [aliasReactPlugin]
   })
 }

@@ -16,6 +16,7 @@ allprojects {
         google()
         mavenCentral()
         // Local Maven repo shipped with Detox for the Android AAR
-        maven { url("$rootDir/../../../node_modules/detox/Detox-android") }
+        // Use property assignment syntax to avoid Gradle deprecation warnings
+        maven { url = uri("$rootDir/../../../node_modules/detox/Detox-android") }
     }
 }
