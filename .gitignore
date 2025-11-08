@@ -9,3 +9,5 @@ npm-debug.log*
 **/.gradle-home
 apps/mobile/android/.gradle-home/
 **/*.tsbuildinfo
+packages/shared/**/*.js
+packages/shared/**/*.d.ts
