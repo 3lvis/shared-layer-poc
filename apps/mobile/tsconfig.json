@@ -9,4 +9,11 @@
     "noEmit": true
   },
   "references": [{ "path": "../../packages/shared" }]
+  ,
+  "exclude": [
+    "__tests__",
+    "android",
+    "ios",
+    "node_modules"
+  ]
 }

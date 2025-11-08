@@ -18,6 +18,7 @@
     "typescript": "^5.6.3",
     "@react-native/babel-preset": "0.82.1",
     "@babel/core": "^7.20.0",
-    "@react-native/metro-config": "0.82.1"
+    "@react-native/metro-config": "0.82.1",
+    "@types/react": "^19.0.0"
   }
 }
