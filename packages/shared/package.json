@@ -7,12 +7,7 @@
   "peerDependencies": {
     "react": ">=18.2 <20"
   },
-  "devDependencies": {
-    "@testing-library/react": "^16.0.0",
-    "jsdom": "^27.1.0",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.1"
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "vitest run"
   }
