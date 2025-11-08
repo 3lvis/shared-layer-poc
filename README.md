@@ -10,6 +10,12 @@ Share one TypeScript “domain” between a React web app and a React Native app
 - Android: `npm run android`
 - Optional: `npm run dev:mobile` then press `i` or `a` inside Metro
 
+## Release builds
+- Web: `npm run build:web`
+- Android APK (release):
+  - Build: `npm run android:release`
+  - Install on emulator/device: `npm run android:install:release`
+
 ## What’s shared
 `@poc/shared` exposes a tiny domain:
 - Types and a sample product catalog
@@ -24,6 +30,12 @@ Edit `packages/shared/index.ts` and both apps hot‑reload with consistent total
 - esbuild dev/build aliases React to a single instance for the web
 
 Result: no “Invalid hook call”, no duplicate React, smooth HMR.
+
+### Android (React Native 0.82) notes
+- New Architecture is enabled by default. Android initialization uses:
+  - `SoLoader.init(applicationContext, OpenSourceMergedSoMapping)`
+  - `DefaultNewArchitectureEntryPoint.load()`
+- This registers the merged-So mapping so native symbols (e.g. `react_featureflagsjni`) resolve correctly from the merged `reactnative` library.
 
 ## Prerequisites
 - Node.js 18+

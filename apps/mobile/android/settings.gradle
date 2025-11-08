@@ -12,5 +12,8 @@ plugins {
   id("com.facebook.react.settings")
 }
 
+// Generate autolinking.json and include native modules discovered by the RN CLI
+reactSettings.autolinkLibrariesFromCommand()
+
 rootProject.name = 'mobile'
 include(":app")

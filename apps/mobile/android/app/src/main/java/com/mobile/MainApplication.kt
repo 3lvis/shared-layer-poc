@@ -6,10 +6,12 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
+import com.facebook.react.soloader.OpenSourceMergedSoMapping
+import android.util.Log
 
 class MainApplication : Application(), ReactApplication {
 
@@ -25,7 +27,8 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
 
-        override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+        // Keep RN 0.82 New Architecture enabled (default)
+        // Do not override isNewArchEnabled to false; RN 0.82 requires New Arch
         override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
       }
 
@@ -34,10 +37,9 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    SoLoader.init(this, false)
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      load()
-    }
+    // Register merged So mapping with SoLoader, as per RN Gradle plugin template
+    SoLoader.init(applicationContext, OpenSourceMergedSoMapping)
+    // Initialize New Architecture feature flags and defaults
+    load()
   }
 }
