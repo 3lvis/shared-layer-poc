@@ -74,7 +74,7 @@ Edit `packages/shared/index.ts` and both apps hot‑reload with consistent total
 ## How it works (in brief)
 - Monorepo via npm workspaces (`apps/*`, `packages/*`)
 - Metro is configured for symlinks and to use a single React copy
-- esbuild dev/build aliases React to a single instance for the web
+- esbuild dev/build uses a vanilla config on web
 
 Result: no “Invalid hook call”, no duplicate React, smooth HMR.
 

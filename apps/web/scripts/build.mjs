@@ -1,11 +1,12 @@
 import esbuild from 'esbuild'
 import { fileURLToPath } from 'url'
 import path from 'node:path'
-import { aliasReactSingletonPlugin } from './aliasReactPlugin.mjs'
+import { createRequire } from 'node:module'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..') // apps/web
-const aliasReactPlugin = aliasReactSingletonPlugin(root)
+const require = createRequire(import.meta.url)
+const resolveFromWeb = (id) => require.resolve(id, { paths: [root] })
 
 export async function build() {
   return esbuild.build({
@@ -19,7 +20,13 @@ export async function build() {
     jsx: 'automatic',
     loader: { '.ts': 'ts', '.tsx': 'tsx' },
     define: { 'process.env.NODE_ENV': '"production"' },
-    plugins: [aliasReactPlugin]
+    alias: {
+      react: resolveFromWeb('react'),
+      'react/jsx-runtime': resolveFromWeb('react/jsx-runtime'),
+      'react/jsx-dev-runtime': resolveFromWeb('react/jsx-dev-runtime'),
+      'react-dom': resolveFromWeb('react-dom'),
+      'react-dom/client': resolveFromWeb('react-dom/client')
+    }
   })
 }
 
