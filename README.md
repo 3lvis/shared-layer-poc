@@ -2,24 +2,16 @@
 
 Share one TypeScript “domain” between a React web app and a React Native app. Tiny, practical, and fast to skim. This is a reference, not a framework.
 
-## Quick start
-- Install: `npm i`
-- iOS pods (first time): `cd apps/mobile/ios && pod install && cd -`
-- Web: `npm run web` → http://localhost:5173
-- iOS: `npm run ios` (starts Metro automatically)
-- Android: `npm run android`
-- Optional: `npm run dev:mobile` then press `i` or `a` inside Metro
-
-### Using Bun (optional, faster)
+## Quick start (Bun default)
 - Install Bun: https://bun.sh/docs/installation
 - Install deps: `bun install`
-- Start Metro (Bun): `npm run start:bun`
-- Android (Bun): `npm run android:bun`
-- iOS (Bun): `npm run ios:bun`
-- Web (Bun): `npm run web:bun`
-- Build web (Bun): `npm run build:web:bun`
+- iOS pods (first time): `cd apps/mobile/ios && pod install && cd -`
+- Web: `bun run web` → http://localhost:5173
+- iOS: `bun run ios` (starts Metro automatically)
+- Android: `bun run android`
+- Optional: `bun run dev:mobile` then press `i` or `a` inside Metro
 
-Notes
+### Notes
 - Bun drastically speeds up installs (`bun install`) and script startup.
 - React Native CLI runs via `bun x react-native` in the mobile workspace.
 - Metro/Gradle/Xcode still do the heavy lifting; Bun optimizes the JS shell.
@@ -59,7 +51,7 @@ Result: no “Invalid hook call”, no duplicate React, smooth HMR.
 ## Troubleshooting (fast)
 - Port 8081 busy: kill and reset Metro
   - `lsof -i :8081 -sTCP:LISTEN -t | xargs kill -9`
-  - `npm --workspace @poc/mobile run start -- --reset-cache`
+  - `bun --cwd apps/mobile x react-native start --reset-cache`
 - Blank page / invalid hook call (web): ensure one React copy
   - `npm i` at repo root, then reload
 - iOS build errors: run `pod install` again in `apps/mobile/ios`
