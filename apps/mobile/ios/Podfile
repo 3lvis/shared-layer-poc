@@ -37,5 +37,16 @@ target 'mobile' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # Ensure FBReactNativeSpec check script does not always run (silences Xcode note)
+    installer.pods_project.targets.each do |t|
+      t.build_phases.each do |phase|
+        if phase.respond_to?(:name) && phase.name == '[CP-User] [RN]Check FBReactNativeSpec'
+          if phase.respond_to?(:always_out_of_date=)
+            phase.always_out_of_date = false
+          end
+        end
+      end
+    end
   end
 end
