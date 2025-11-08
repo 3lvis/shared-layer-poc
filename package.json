@@ -9,6 +9,11 @@
     "dev:mobile": "npm --workspace @poc/mobile run start",
     "ios": "npm --workspace @poc/mobile run ios",
     "android": "npm --workspace @poc/mobile run android",
+    "start:bun": "bun --cwd apps/mobile x react-native start",
+    "ios:bun": "bun --cwd apps/mobile x react-native run-ios --simulator 'iPhone 16 Pro'",
+    "android:bun": "bun --cwd apps/mobile x react-native run-android",
+    "web:bun": "bun apps/web/scripts/dev.mjs",
+    "build:web:bun": "bun apps/web/scripts/build.mjs",
     "android:release": "cd apps/mobile/android && ./gradlew clean assembleRelease",
     "android:install:release": "adb install -r apps/mobile/android/app/build/outputs/apk/release/app-release.apk",
     "release": "npm run build:web && npm run android:release",
@@ -17,5 +22,6 @@
   },
   "devDependencies": {
     "@react-native-community/cli": "*"
-  }
+  },
+  "packageManager": "bun@1.1.30"
 }
