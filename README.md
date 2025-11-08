@@ -11,6 +11,7 @@ Scripts
 - iOS (simulator): `npm run integrate:ios`
 - Android (emulator): `npm run integrate:android`
 - All (sequential): `npm run integrate:all`
+ - Fix Watchman recrawl noise: `npm run fix:watchman`
 
 Requirements
 - Node 18+

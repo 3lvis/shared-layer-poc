@@ -21,7 +21,8 @@
     "integrate:web": "npm run -w @poc/web build && npx playwright test -c apps/web/playwright.config.js",
     "integrate:ios": "cd apps/mobile && npx detox build -c ios.sim.release -l error && NODE_NO_WARNINGS=1 npx detox test -c ios.sim.release -l error --artifacts-location ../../artifacts/detox/ios --record-logs failing --take-screenshots failing --record-videos failing",
     "integrate:android": "cd apps/mobile && npx detox build -c android.emu.release -l error && NODE_NO_WARNINGS=1 npx detox test -c android.emu.release -l error --artifacts-location ../../artifacts/detox/android --record-logs failing --take-screenshots failing --record-videos failing",
-    "integrate:all": "npm run integrate:web && npm run integrate:ios && npm run integrate:android"
+    "integrate:all": "npm run integrate:web && npm run integrate:ios && npm run integrate:android",
+    "fix:watchman": "watchman watch-del \"$PWD\" ; watchman watch-project \"$PWD\""
   },
   "devDependencies": {
     "@react-native-community/cli": "*",
