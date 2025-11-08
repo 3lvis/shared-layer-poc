@@ -8,3 +8,9 @@ npm-debug.log*
 **/.gradle
 **/.gradle-home
 apps/mobile/android/.gradle-home/
+artifacts/
+apps/web/test-results/
+apps/mobile/ios/build/
+apps/mobile/android/**/build/
+apps/mobile/android/.cxx/
+/test

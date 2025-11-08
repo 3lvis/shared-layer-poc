@@ -2,6 +2,52 @@
 
 Share one TypeScript “domain” between a React web app and a React Native app. Tiny, practical, and fast to skim. This is a reference, not a framework.
 
+## Local Integration Runs (Web, iOS, Android)
+Validates the same happy path end‑to‑end locally: “add product → cart total updates”. Minimal deps; npm‑only.
+
+Scripts
+- Units (shared only): `npm test`
+- Web: `npm run integrate:web`
+- iOS (simulator): `npm run integrate:ios`
+- Android (emulator): `npm run integrate:android`
+- All (sequential): `npm run integrate:all`
+
+Requirements
+- Node 18+
+- Xcode + iOS Simulator, CocoaPods
+- Android SDK (API 34), JDK 17, an API 34 emulator image
+ - Detox iOS helper: `applesimutils` (Homebrew)
+
+One‑time setup
+- `npm i`
+- `cd apps/mobile/ios && pod install && cd -`
+- Ensure an Android emulator for API 34 exists and is running (e.g. “Pixel_6_API_34”).
+- For Playwright browsers: `npx playwright install`
+- For Detox iOS: `brew tap wix/brew && brew install applesimutils`
+ - For Detox Android: set a matching AVD name if needed, e.g.
+   - `DETOX_AVD_NAME=Pixel_7_API_34 npm run integrate:android`
+   - Default AVD name: `Pixel_7_API_34` (change via env var)
+
+Artifacts
+- JUnit/XML: `artifacts/vitest/results.xml`, `artifacts/playwright/results.xml`
+- Detox (failing tests only): logs, screenshots, videos under `artifacts/detox/{ios,android}`
+
+Log noise reduction
+- iOS Detox build uses `xcodebuild -quiet` and a generic simulator destination to avoid device lists.
+- Detox CLI runs with `-l error` and `NODE_NO_WARNINGS=1` to show only actionable errors.
+- Detox artifacts are captured only for failing tests (logs/screenshots/videos).
+
+Known warnings (safe to ignore)
+- Hermes bundle compile warnings (variables like `Promise`, `AbortController` etc.): benign during JS precompile.
+- ld duplicate `-lc++` and missing `Metal.xctoolchain` Swift path: Xcode toolchain quirks; build still valid.
+- Xcode “Run script build phase … will be run during every build”: from RN/Pods scripts. Optional fix in Xcode by either unchecking “Based on dependency analysis” or adding an output file to the script phase.
+- Android: Gradle “Deprecated features used” banner: from RN/AGP; harmless for current Gradle version.
+
+Watchman note
+If you see a Watchman recrawl warning (safe but noisy), clear and re-add the watch once:
+
+`watchman watch-del "$(pwd)" ; watchman watch-project "$(pwd)"`
+
 ## Quick start
 - Install: `npm i`
 - iOS pods (first time): `cd apps/mobile/ios && pod install && cd -`

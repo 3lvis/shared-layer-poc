@@ -15,5 +15,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // Local Maven repo shipped with Detox for the Android AAR
+        maven { url("$rootDir/../../../node_modules/detox/Detox-android") }
     }
 }

@@ -19,7 +19,7 @@ const aliasReactPlugin = {
   }
 }
 
-export async function build({ watch = false } = {}) {
+export async function build() {
   return esbuild.build({
     entryPoints: ['src/main.tsx'],
     outfile: 'dist/app.js',
@@ -31,7 +31,6 @@ export async function build({ watch = false } = {}) {
     jsx: 'automatic',
     loader: { '.ts': 'ts', '.tsx': 'tsx' },
     define: { 'process.env.NODE_ENV': '"development"' },
-    watch,
     plugins: [aliasReactPlugin]
   })
 }

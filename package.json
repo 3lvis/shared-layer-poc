@@ -2,6 +2,10 @@
   "name": "shared-layer-poc",
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
+  "overrides": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
   "scripts": {
     "dev:web": "node apps/web/scripts/dev.mjs",
     "web": "npm run dev:web",
@@ -13,9 +17,16 @@
     "android:install:release": "adb install -r apps/mobile/android/app/build/outputs/apk/release/app-release.apk",
     "release": "npm run build:web && npm run android:release",
     "typecheck": "tsc -b --pretty",
-    "test": "npm --workspace @poc/shared run test"
+    "test": "npm --workspace @poc/shared run test",
+    "integrate:web": "npm run -w @poc/web build && npx playwright test -c apps/web/playwright.config.js",
+    "integrate:ios": "cd apps/mobile && npx detox build -c ios.sim.release -l error && NODE_NO_WARNINGS=1 npx detox test -c ios.sim.release -l error --artifacts-location ../../artifacts/detox/ios --record-logs failing --take-screenshots failing --record-videos failing",
+    "integrate:android": "cd apps/mobile && npx detox build -c android.emu.release -l error && NODE_NO_WARNINGS=1 npx detox test -c android.emu.release -l error --artifacts-location ../../artifacts/detox/android --record-logs failing --take-screenshots failing --record-videos failing",
+    "integrate:all": "npm run integrate:web && npm run integrate:ios && npm run integrate:android"
   },
   "devDependencies": {
-    "@react-native-community/cli": "*"
+    "@react-native-community/cli": "*",
+    "@playwright/test": "^1.48.2",
+    "detox": "^20.16.2",
+    "jest": "^29.7.0"
   }
 }

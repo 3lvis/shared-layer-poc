@@ -11,13 +11,17 @@ function App() {
         {Object.values(catalog).map(p => (
           <li key={p.id} style={{ marginBottom: 8 }}>
             {p.name} — {p.priceNOK} NOK
-            <button style={{ marginLeft: 8 }} onClick={() => add(p.id)}>
+            <button
+              style={{ marginLeft: 8 }}
+              data-testid={`add-button-${p.id}`}
+              onClick={() => add(p.id)}
+            >
               Add
             </button>
           </li>
         ))}
       </ul>
-      <div><strong>Total:</strong> {totalNOK} NOK</div>
+      <div data-testid="cart-total"><strong>Total:</strong> {totalNOK} NOK</div>
     </main>
   )
 }

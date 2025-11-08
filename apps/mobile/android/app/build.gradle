@@ -47,7 +47,8 @@ react {
 
     /* Hermes Commands */
     //   The hermes compiler command to run. By default it is 'hermesc'
-    // hermesCommand = "$rootDir/my-custom-hermesc/bin/hermesc"
+    //   Point to prebuilt hermesc shipped with React Native (macOS host)
+    hermesCommand = "$rootDir/../../../node_modules/react-native/sdks/hermesc/osx-bin/hermesc"
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
@@ -86,6 +87,7 @@ android {
         targetSdk = rootProject.ext.targetSdkVersion
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         debug {
@@ -118,6 +120,11 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Detox Android E2E instrumentation
+    androidTestImplementation("com.wix:detox:+")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 }
 
 // Autolinking is handled by the React Native Gradle Plugin

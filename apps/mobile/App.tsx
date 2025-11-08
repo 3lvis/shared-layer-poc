@@ -21,11 +21,20 @@ export default function App() {
         renderItem={({ item }) => (
           <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
             <Text>{item.name} — {item.priceNOK} NOK</Text>
-            <Button title="Add" onPress={() => add(item.id)} />
+            <Button
+              title="Add"
+              testID={`add-button-${item.id}`}
+              onPress={() => add(item.id)}
+            />
           </View>
         )}
       />
-      <Text style={{ fontSize: 18, margin: 16 }}>Total: {totalNOK} NOK</Text>
+      <Text
+        testID="cart-total"
+        style={{ fontSize: 18, margin: 16 }}
+      >
+        Total: {totalNOK} NOK
+      </Text>
     </SafeAreaView>
   )
 }

@@ -4,7 +4,10 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    include: ['__tests__/**/*.test.ts']
+    include: ['__tests__/**/*.test.ts'],
+    reporters: [
+      'default',
+      ['junit', { outputFile: '../../artifacts/vitest/results.xml' }]
+    ]
   }
 })
-
