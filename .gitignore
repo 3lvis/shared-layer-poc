@@ -4,4 +4,7 @@ build
 npm-debug.log*
 .DS_Store
 .expo
-
+.gradle
+**/.gradle
+**/.gradle-home
+apps/mobile/android/.gradle-home/
