@@ -3,7 +3,7 @@
   "references": [
     { "path": "packages/shared" },
     { "path": "apps/web" },
-    { "path": "apps/mobile" }
+    { "path": "apps/mobile" },
+    { "path": "apps/admin" }
   ]
 }
-

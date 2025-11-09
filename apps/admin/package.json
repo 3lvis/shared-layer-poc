@@ -1,6 +1,5 @@
 {
-  "name": "@axis/web",
-  "version": "0.0.0",
+  "name": "@axis/admin",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,11 +7,12 @@
     "build": "node scripts/build.mjs"
   },
   "dependencies": {
-    "react-dom": "19.1.1",
-    "@axis/shared": "0.0.0"
+    "@axis/shared": "*",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "esbuild": "^0.24.0",
-    "typescript": "^5.6.3"
+    "esbuild": "^0.23.0"
   }
 }
+

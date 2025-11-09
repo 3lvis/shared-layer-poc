@@ -1,10 +1,10 @@
-export type Product = { id: string; name: string; priceNOK: number }
+export type Product = { id: string; name: string; description: string; priceNOK: number }
 export type CartLine = { productId: string; qty: number }
 
 export const catalog: Record<string, Product> = {
-  apl: { id: 'apl', name: 'Pink Lady Apple', priceNOK: 6 },
-  mlk: { id: 'mlk', name: 'Whole Milk 1L',   priceNOK: 22 },
-  brd: { id: 'brd', name: 'Rugbrød',         priceNOK: 39 }
+  apl: { id: 'apl', name: 'Pink Lady Apple', description: 'Crisp and sweet. 1 pc', priceNOK: 6 },
+  mlk: { id: 'mlk', name: 'Whole Milk 1L',   description: 'Fresh dairy milk. 1 L', priceNOK: 22 },
+  brd: { id: 'brd', name: 'Rugbrød',         description: 'Dense rye bread. 1 loaf', priceNOK: 39 }
 }
 
 export function addToCart(cart: CartLine[], productId: string): CartLine[] {
@@ -53,6 +53,7 @@ export function cartReducer(state: CartLine[], action: CartAction): CartLine[] {
 export type CartItemView = {
   id: string
   name: string
+  description: string
   priceNOK: number
   qty: number
   lineTotalNOK: number
@@ -64,6 +65,7 @@ export function mapCartItems(cart: CartLine[]): CartItemView[] {
     return {
       id: p.id,
       name: p.name,
+      description: p.description,
       priceNOK: p.priceNOK,
       qty: l.qty,
       lineTotalNOK: p.priceNOK * l.qty
