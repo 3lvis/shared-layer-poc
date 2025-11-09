@@ -1,13 +1,15 @@
-```
-    /\        \ \    / /   _____    ____  
-   /  \        \ \  / /   |_   _|  / ___| 
-  / /\ \        \ \/ /      | |    \___ \ 
- / ____ \        / /\ \      | |     ___) |
-/_/    \_\      /_/  \_\     |_|    |____/ 
+<div align="center">
+<pre style="font-family:SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:14px;line-height:1.1;">
+ █████╗ ██╗  ██╗██╗███████╗
+██╔══██╗╚██╗██╔╝██║██╔════╝
+███████║ ╚███╔╝ ██║███████╗
+██╔══██║ ██╔██╗ ██║╚════██║
+██║  ██║██╔╝ ██╗██║███████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
+</pre>
+</div>
 
-             A X I S — Hardcore, Unified, Fast
-          The Monorepo & CLI for Web, iOS, Android
-```
+
 
 Axis is an all‑in‑one developer stack: a focused monorepo, a tiny CLI, and a shared domain that lights up web, iOS, and Android together. It’s pragmatic, fast to skim, and ready to ship — not a framework, a toolbox.
 
