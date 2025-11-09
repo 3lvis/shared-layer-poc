@@ -1,12 +1,12 @@
 ```
-      _    __  __  _____
-     / \  |  \/  || ____|
-    / _ \ | |\/| ||  _|
-   / ___ \| |  | || |___
-  /_/   \_\_|  |_||_____|
+    /\        \ \    / /   _____    ____  
+   /  \        \ \  / /   |_   _|  / ___| 
+  / /\ \        \ \/ /      | |    \___ \ 
+ / ____ \        / /\ \      | |     ___) |
+/_/    \_\      /_/  \_\     |_|    |____/ 
 
-         Axis CLI & Monorepo
-   Build once. Ship web, iOS, Android.
+             A X I S — Hardcore, Unified, Fast
+          The Monorepo & CLI for Web, iOS, Android
 ```
 
 Axis is an all‑in‑one developer stack: a focused monorepo, a tiny CLI, and a shared domain that lights up web, iOS, and Android together. It’s pragmatic, fast to skim, and ready to ship — not a framework, a toolbox.
@@ -17,6 +17,14 @@ Highlights
 - Headless API (Fastify) that speaks the same types
 - E2E integration for web (Playwright) + mobile (Detox)
 - Axis CLI to create, update, and doctor projects
+
+Why Axis (the Rationale)
+- One team, three platforms. Stop forking logic — share types, hooks, and models once.
+- Reality beats theory. Ship a feature and have it light up on web and mobile together.
+- The loop is tight. Edit `@axis/shared`, hot‑reload in apps, run one command, get green.
+- Minimal by design. No yak‑shaving, no mystery stack — simple scripts, clear wiring.
+- Ladder of adoption. Start small, add Storybook, Admin workflows, and Deploy when you need them.
+- Own your velocity. Axis keeps you moving; you keep full control.
 
 Quick Start
 - Install deps: `npm i`
