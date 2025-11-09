@@ -6,36 +6,22 @@
  */
 
 import React from 'react'
-import { SafeAreaView, Text, Button, FlatList, View } from 'react-native'
-import { catalog, useCart, type Product } from '@axis/shared'
+import { SafeAreaView, Text, Button, View } from 'react-native'
+import { useCounter } from '@axis/shared'
 
 export default function App() {
-  const { totalNOK, add } = useCart()
-  const data: Product[] = Object.values(catalog)
+  const { count, inc, dec, reset } = useCounter(0)
   return (
     <SafeAreaView>
       <Text style={{ fontSize: 24, margin: 16 }}>Axis Mobile</Text>
-      <FlatList
-        data={data}
-        keyExtractor={p => p.id}
-        renderItem={({ item }) => (
-          <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-            <Text style={{ fontWeight: '600' }}>{item.name} — {item.priceNOK} NOK</Text>
-            <Text style={{ color: '#666', marginBottom: 4 }}>{item.description}</Text>
-            <Button
-              title="Add"
-              testID={`add-button-${item.id}`}
-              onPress={() => add(item.id)}
-            />
-          </View>
-        )}
-      />
-      <Text
-        testID="cart-total"
-        style={{ fontSize: 18, margin: 16 }}
-      >
-        Total: {totalNOK} NOK
-      </Text>
+      <Text style={{ color: '#666', marginHorizontal: 16 }}>Minimal template without cart/grocery logic.</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, margin: 16 }}>
+        <Button title="-" onPress={dec} testID="dec" />
+        <Text testID="count" style={{ fontSize: 18, marginHorizontal: 12 }}>{count}</Text>
+        <Button title="+" onPress={inc} testID="inc" />
+        <View style={{ width: 8 }} />
+        <Button title="Reset" onPress={reset} testID="reset" />
+      </View>
     </SafeAreaView>
   )
 }

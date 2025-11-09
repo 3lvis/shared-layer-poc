@@ -1,12 +1,20 @@
 {
   "name": "@axis/cli",
-  "private": true,
+  "private": false,
   "type": "module",
   "bin": {
     "axis": "src/index.mjs"
   },
   "version": "0.1.0",
-  "description": "Axis monorepo CLI: create, update, doctor",
+  "description": "Axis CLI: create, update, integrate, test, doctor",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "prepublishOnly": "node src/index.mjs test"
+  },
   "dependencies": {}
 }
-

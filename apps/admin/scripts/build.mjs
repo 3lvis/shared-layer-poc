@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..') // apps/admin
+const workspaceRoot = path.resolve(root, '../..')
 const require = createRequire(import.meta.url)
 const resolveFrom = (id) => require.resolve(id, { paths: [root] })
 
@@ -25,7 +26,8 @@ export async function build() {
       'react/jsx-runtime': resolveFrom('react/jsx-runtime'),
       'react/jsx-dev-runtime': resolveFrom('react/jsx-dev-runtime'),
       'react-dom': resolveFrom('react-dom'),
-      'react-dom/client': resolveFrom('react-dom/client')
+      'react-dom/client': resolveFrom('react-dom/client'),
+      '@axis/shared': path.join(workspaceRoot, 'packages/shared/index.ts')
     }
   })
 }
@@ -33,4 +35,3 @@ export async function build() {
 if (import.meta.url === `file://${process.argv[1]}`) {
   await build()
 }
-

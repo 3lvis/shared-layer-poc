@@ -1,95 +1,27 @@
-export type Product = { id: string; name: string; description: string; priceNOK: number }
-export type CartLine = { productId: string; qty: number }
+// Minimal shared utilities (no domain-specific logic)
+import { useReducer, useCallback } from 'react'
 
-export const catalog: Record<string, Product> = {
-  apl: { id: 'apl', name: 'Pink Lady Apple', description: 'Crisp and sweet. 1 pc', priceNOK: 6 },
-  mlk: { id: 'mlk', name: 'Whole Milk 1L',   description: 'Fresh dairy milk. 1 L', priceNOK: 22 },
-  brd: { id: 'brd', name: 'Rugbrød',         description: 'Dense rye bread. 1 loaf', priceNOK: 39 }
+export function appInfo() {
+  return { name: 'Axis', tagline: 'One monorepo, many surfaces' }
 }
 
-export function addToCart(cart: CartLine[], productId: string): CartLine[] {
-  const i = cart.findIndex(l => l.productId === productId)
-  if (i === -1) return [...cart, { productId, qty: 1 }]
-  const next = cart.slice()
-  next[i] = { ...next[i], qty: next[i].qty + 1 }
-  return next
-}
-
-export function calcTotal(cart: CartLine[]): number {
-  return cart.reduce((sum, l) => sum + catalog[l.productId].priceNOK * l.qty, 0)
-}
-
-// Reducer + presenter hook for shared view logic
-export type CartAction =
-  | { type: 'add'; productId: string }
-  | { type: 'remove'; productId: string }
-  | { type: 'clear' }
-
-export function removeFromCart(cart: CartLine[], productId: string): CartLine[] {
-  const i = cart.findIndex(l => l.productId === productId)
-  if (i === -1) return cart
-  const line = cart[i]
-  if (line.qty <= 1) return cart.filter((_, idx) => idx !== i)
-  const next = cart.slice()
-  next[i] = { ...line, qty: line.qty - 1 }
-  return next
-}
-
-export function clearCart(): CartLine[] { return [] }
-
-export function cartReducer(state: CartLine[], action: CartAction): CartLine[] {
-  switch (action.type) {
-    case 'add':
-      return addToCart(state, action.productId)
-    case 'remove':
-      return removeFromCart(state, action.productId)
-    case 'clear':
-      return clearCart()
-    default:
-      return state
-  }
-}
-
-export type CartItemView = {
-  id: string
-  name: string
-  description: string
-  priceNOK: number
-  qty: number
-  lineTotalNOK: number
-}
-
-export function mapCartItems(cart: CartLine[]): CartItemView[] {
-  return cart.map(l => {
-    const p = catalog[l.productId]
-    return {
-      id: p.id,
-      name: p.name,
-      description: p.description,
-      priceNOK: p.priceNOK,
-      qty: l.qty,
-      lineTotalNOK: p.priceNOK * l.qty
+export function useCounter(initial = 0) {
+  type Action = { type: 'inc' | 'dec' | 'reset' }
+  function reducer(state: number, action: Action): number {
+    switch (action.type) {
+      case 'inc':
+        return state + 1
+      case 'dec':
+        return state - 1
+      case 'reset':
+        return initial
+      default:
+        return state
     }
-  })
-}
-
-export function countItems(cart: CartLine[]): number {
-  return cart.reduce((n, l) => n + l.qty, 0)
-}
-
-// useCart presenter hook
-import { useMemo, useReducer, useCallback } from 'react'
-
-export function useCart(initial: CartLine[] = []) {
-  const [cart, dispatch] = useReducer(cartReducer, initial)
-
-  const items = useMemo(() => mapCartItems(cart), [cart])
-  const totalNOK = useMemo(() => calcTotal(cart), [cart])
-  const itemCount = useMemo(() => countItems(cart), [cart])
-
-  const add = useCallback((productId: string) => dispatch({ type: 'add', productId }), [])
-  const remove = useCallback((productId: string) => dispatch({ type: 'remove', productId }), [])
-  const clear = useCallback(() => dispatch({ type: 'clear' }), [])
-
-  return { cart, items, totalNOK, itemCount, add, remove, clear }
+  }
+  const [count, dispatch] = useReducer(reducer, initial)
+  const inc = useCallback(() => dispatch({ type: 'inc' }), [])
+  const dec = useCallback(() => dispatch({ type: 'dec' }), [])
+  const reset = useCallback(() => dispatch({ type: 'reset' }), [initial])
+  return { count, inc, dec, reset }
 }

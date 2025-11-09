@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..') // apps/admin
+const workspaceRoot = path.resolve(root, '../..')
 const require = createRequire(import.meta.url)
 const resolveFrom = (id) => require.resolve(id, { paths: [root] })
 
@@ -24,11 +25,11 @@ const ctx = await esbuild.context({
     'react/jsx-runtime': resolveFrom('react/jsx-runtime'),
     'react/jsx-dev-runtime': resolveFrom('react/jsx-dev-runtime'),
     'react-dom': resolveFrom('react-dom'),
-    'react-dom/client': resolveFrom('react-dom/client')
+    'react-dom/client': resolveFrom('react-dom/client'),
+    '@axis/shared': path.join(workspaceRoot, 'packages/shared/index.ts')
   }
 })
 
 await ctx.watch()
 await ctx.serve({ servedir: root, port: 5273 })
 console.log('→ Admin dev server on http://localhost:5273')
-

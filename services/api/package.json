@@ -3,17 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "node src/index.js",
     "start": "node dist/index.js",
     "build": "tsc -p ."
   },
   "dependencies": {
-    "@axis/shared": "*",
     "fastify": "^4.27.0",
     "@fastify/cors": "^9.0.1"
   },
   "devDependencies": {
-    "tsx": "^4.19.1",
     "typescript": "^5.6.3"
   }
 }
